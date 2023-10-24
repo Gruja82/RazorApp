@@ -1,0 +1,55 @@
+﻿@page
+@model RazorApp.Web.Pages.Productions.IndexModel
+
+<h3 class="text-center">Productions</h3>
+
+<a asp-page="/Productions/Create" asp-page-handler="OnGet" class="btn btn-primary">Create New</a>
+
+<nav class="navbar navbar-light bg-light">
+    <form method="get" class="form-inline">
+        <input name="searchText" type="text" placeholder="Search" />
+        <select name="product">
+            <option>Select Product</option>
+            @foreach (var product in Model.ProductList!)
+            {
+                <option>@product</option>
+            }
+        </select>
+
+        <select name="productionDate">
+            <option>Select Date</option>
+            @foreach (var date in Model.ProductionDates!)
+            {
+                <option>@date</option>
+            }
+        </select>
+        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search" />
+    </form>
+</nav>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Product</th>
+            <th scope="col">Date</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ProductionModel.DataSet != null)
+        {
+            @foreach (var production in Model.ProductionModel.DataSet)
+            {
+                <tr>
+                    <td>@production.Code</td>
+                    <td>@production.ProductName</td>
+                    <td>@production.ProductionDate.ToShortDateString()</td>
+                    <td>
+                        <a asp-page="/Productions/Edit" asp-page-handler="OnGet" asp-route-Id="@production.Id" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

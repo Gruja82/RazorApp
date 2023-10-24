@@ -1,0 +1,98 @@
+﻿@page
+@model RazorApp.Web.Pages.Materials.IndexModel
+
+<h3 class="text-center">Materials</h3>
+
+<a asp-page="/Materials/Create" asp-page-handler="OnGet" class="btn btn-primary">Create New</a>
+
+<nav class="navbar navbar-light bg-light">
+    <form method="get" class="form-inline">
+        <input name="searchText" type="text" placeholder="Search" />
+        <select name="category">
+            <option>Select Category</option>
+            @foreach (var category in Model.CategoryList!)
+            {
+                <option>@category</option>
+            }
+        </select>
+        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search" />
+    </form>
+</nav>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Name</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.MaterialModel.DataSet != null)
+        {
+            @foreach (var material in Model.MaterialModel.DataSet)
+            {
+                <tr>
+                    <td>@material.Code</td>
+                    <td>@material.Name</td>
+                    <td>
+                        <a asp-page="/Materials/Edit" asp-page-handler="OnGet" asp-route-Id="@material.Id" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<form asp-page-handler="OnGet" method="get">
+    <nav>
+        <ul class="pagination">
+            @*Previous button*@
+            @if (Model.MaterialModel.PageIndex > 1)
+            {
+                <li class="page-item">
+                    <button class="page-link" type="submit" name="pageIndex" value="@(Model.MaterialModel.PageIndex - 1)">
+                        <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+            }
+
+            @*Numbers*@
+            @for (int i = 1; i <= Model.MaterialModel.TotalPages; i++)
+            {
+                @if (i == Model.MaterialModel.PageIndex)
+                {
+                    <li class="page-item">
+                        <span class="btn btn-info">@i</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <input class="btn btn-outline-info" type="submit" value="@i" name="pageIndex" />
+                    </li>
+                }
+            }
+
+            @*Next button*@
+            @if (Model.MaterialModel.PageIndex < Model.MaterialModel.TotalPages)
+            {
+                <li class="page-item">
+                    <button class="page-link" type="submit" name="pageIndex" value="@(Model.MaterialModel.PageIndex + 1)">
+                        <span aria-hidden="true">&raquo;</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </nav>
+
+    <div>
+        Page size: <select asp-for="MaterialModel.PageSize" name="pageSize">
+            @for (int i = 1; i <= 10; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </div>
+</form>

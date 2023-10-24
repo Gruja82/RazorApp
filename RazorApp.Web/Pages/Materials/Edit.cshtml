@@ -1,0 +1,52 @@
+﻿@page "{id}"
+@model RazorApp.Web.Pages.Materials.EditModel
+
+<h3 class="text-center">Material "@Model.MaterialModel.Name"</h3>
+
+<hr />
+
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="MaterialModel.Id" hidden />
+    <div class="form-group">
+        <div class="form-group">
+            <img src="~/Images/Materials/@Model.MaterialModel.ImageUrl" width="200" height="200" id="imgElement" asp-append-version="true" />
+        </div>
+        <div class="form-group">
+            <input type="file" asp-for="MaterialModel.Image" class="form-control" id="inputElement" onchange="setSrc()" />
+        </div>
+        <input asp-for="MaterialModel.ImageUrl" hidden />
+    </div>
+    <div class="form-group">
+        <label>Code</label>
+        <input asp-for="MaterialModel.Code" class="form-control" />
+        <span asp-validation-for="MaterialModel.Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Name</label>
+        <input asp-for="MaterialModel.Name" class="form-control" />
+        <span asp-validation-for="MaterialModel.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Category</label>
+        <select asp-for="MaterialModel.CategoryName" class="form-control">
+            @foreach (var category in Model.CategoryList)
+            {
+                <option>@category</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <input asp-for="MaterialModel.Qty" class="form-control" readonly />
+        <span asp-validation-for="MaterialModel.Qty" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Price</label>
+        <input asp-for="MaterialModel.Price" class="form-control" />
+        <span asp-validation-for="MaterialModel.Price" class="text-danger"></span>
+    </div>
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary" asp-page-handler="Edit">Save Changes</button>
+        <button type="submit" class="btn btn-danger" asp-page-handler="Delete" onclick="return confirm('Are you sure you want to delete this Material?')">Delete</button>
+    </div>
+</form>

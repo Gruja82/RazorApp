@@ -1,0 +1,111 @@
+﻿@page "{id}"
+@using RazorApp.Models.Dtos;
+@model RazorApp.Web.Pages.Products.EditModel
+
+@{
+    double productionCost = 0;
+}
+
+<h3 class="text-center">Product "@Model.ProductModel.Name"</h3>
+
+<hr />
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        <input asp-for="ProductModel.Id" hidden />
+        <div style="width:100%">
+            <div class="div-left">
+                <h4 class="text-center">General Details</h4>
+                <hr />
+                <div class="form-group">
+                    <img src="~/Images/Products/@Model.ProductModel.ImageUrl" width="200" height="200" id="imgElement" asp-append-version="true" />
+                </div>
+                <div class="form-group">
+                    <input type="file" asp-for="ProductModel.Image" class="form-control" id="inputElement" onchange="setSrc()" />
+                </div>
+                <div class="form-group">
+                    <label>Code</label>
+                    <input asp-for="ProductModel.Code" class="form-control" />
+                    <span asp-validation-for="ProductModel.Code" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input id="productName" asp-for="ProductModel.Name" class="form-control" />
+                    <span asp-validation-for="ProductModel.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select asp-for="ProductModel.CategoryName" class="form-control">
+                        @foreach (var category in Model.CategoryList!)
+                        {
+                            <option>@category</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ProductModel.CategoryName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input asp-for="ProductModel.Price" class="form-control" />
+                    <span asp-validation-for="ProductModel.Price" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="div-right">
+                <h4 class="text-center">Production Specification</h4>
+                <hr />
+                <div class="div-scroll">
+                    <div id="productDetails">
+                    </div>
+                </div>
+                <div>
+                    <select id="lstMaterials" class="form-control-sm">
+                        @foreach (var material in Model.MaterialList!)
+                        {
+                            <option>@material.Name</option>
+                        }
+                    </select>
+
+                    <input id="inputQuantity" class="form-control-sm mt-3 m-lg-3" />
+
+                    <input type="button" id="btnAdd" value="Add" onclick="addProductRow()" class="btn btn-primary m-lg-3" />
+                </div>
+                <select id="lstPrice" hidden>
+                    @foreach (var material in Model.MaterialList)
+                    {
+                        <option>@material.Price</option>
+                    }
+                </select>
+
+                <span asp-validation-for="ProductModel.ProductDetailDtos" class="text-danger"></span>
+
+                <div class="form-group">
+                    <input id="inputTotal" readonly value="0" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-primary" asp-page-handler="Edit">Save Changes</button>
+            <button type="submit" class="btn btn-danger" asp-page-handler="Delete" onclick="return confirm('Are you sure you want to delete this Product?')">Delete</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="~/js/Product.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+    window.onload = (function () {
+    @if (Model.ProductModel.ProductDetailDtos != null)
+    {
+        @foreach (var item in Model.ProductModel.ProductDetailDtos)
+        {
+            MaterialDto materialDto = Model.MaterialList.FirstOrDefault(e => e.Name == item.MaterialName)!;
+            productionCost += materialDto.Price * item.Qty;
+
+            <text>
+                populateProductRows("@item.MaterialName", @item.Qty);
+                populateProductTotal(@productionCost);
+            </text>
+        }
+    }
+            })
+</script>

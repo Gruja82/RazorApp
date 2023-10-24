@@ -1,0 +1,105 @@
+﻿@page "{id}"
+@using RazorApp.Models.Dtos;
+@model RazorApp.Web.Pages.Purchases.EditModel
+
+@{
+    double purchaseTotal = 0;
+}
+
+<h3 class="text-center">Order "@Model.PurchaseModel.PurchaseCode"</h3>
+
+<hr />
+
+<div class="container">
+    <form method="post">
+        <input asp-for="PurchaseModel.Id" hidden />
+        <div style="width:100%">
+            <div class="div-left">
+                <h4 class="text-center">General Details</h4>
+                <hr />
+                <div class="form-group">
+                    <label>Code</label>
+                    <input asp-for="PurchaseModel.PurchaseCode" class="form-control" />
+                    <span asp-validation-for="PurchaseModel.PurchaseCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Purchase Date</label>
+                    <input type="date" asp-for="PurchaseModel.PurchaseDate" class="form-control" />
+                    <span asp-validation-for="PurchaseModel.PurchaseDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Supplier</label>
+                    <select asp-for="PurchaseModel.SupplierName" class="form-control">
+                        @foreach (var supplier in Model.SupplierList!)
+                        {
+                            <option>@supplier</option>
+                        }
+                    </select>
+                    <span asp-validation-for="PurchaseModel.SupplierName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="div-right">
+                <h4 class="text-center">Materials Purchased</h4>
+                <hr />
+                <div class="div-scroll">
+                    <div id="purchaseDetails">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label class="form-control text-center">Material and Quantity</label>
+                    </div>
+
+                    <select id="lstMaterials" class="form-control-sm">
+                        @foreach (var material in Model.MaterialList!)
+                        {
+                            <option>@material.Name</option>
+                        }
+                    </select>
+
+                    <input id="inputQuantity" class="form-control-sm mt-3 m-lg-3" />
+
+                    <input type="button" id="btnAdd" value="Add" onclick="addPurchaseRow()" class="btn btn-primary m-lg-3" />
+                </div>
+
+                <select id="lstPrice" hidden>
+                    @foreach (var material in Model.MaterialList)
+                    {
+                        <option>@material.Price</option>
+                    }
+                </select>
+
+                <span asp-validation-for="PurchaseModel.PurchaseDetailDtos" class="text-danger"></span>
+
+                <div class="form-group">
+                    <input id="inputTotal" readonly value="0" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-primary" asp-page-handler="Edit">Save Changes</button>
+            <button type="submit" class="btn btn-danger" asp-page-handler="Delete" onclick="return confirm('Are you sure you want to delete this Purchase?')">Delete</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="~/js/Purchase.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+    window.onload = (function () {
+    @if (Model.PurchaseModel.PurchaseDetailDtos != null)
+    {
+        @foreach (var item in Model.PurchaseModel.PurchaseDetailDtos)
+        {
+            MaterialDto materialDto = Model.MaterialList.FirstOrDefault(e => e.Name == item.MaterialName)!;
+            purchaseTotal += materialDto.Price * item.Qty;
+
+            <text>
+                    populatePurchaseRows("@item.MaterialName", @item.Qty);
+                    populatePurchaseTotal(@purchaseTotal);
+            </text>
+        }
+    }
+                })
+</script>

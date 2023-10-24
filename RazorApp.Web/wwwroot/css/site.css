@@ -1,0 +1,33 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.div-left {
+    width: 50%;
+    float: left;
+}
+
+.div-right {
+    width: 50%;
+    float: right;
+}
+
+.div-scroll {
+    overflow-y: scroll;
+    height: 300px;
+}

@@ -1,0 +1,105 @@
+﻿@page "{id}"
+@using RazorApp.Models.Dtos;
+@model RazorApp.Web.Pages.Orders.EditModel
+
+@{
+    double orderTotal = 0;
+}
+
+<h3 class="text-center">Order "@Model.OrderModel.OrderCode"</h3>
+
+<hr />
+
+<div class="container">
+    <form method="post">
+        <input asp-for="OrderModel.Id" hidden />
+        <div style="width:100%">
+            <div class="div-left">
+                <h4 class="text-center">General Details</h4>
+                <hr />
+                <div class="form-group">
+                    <label>Code</label>
+                    <input asp-for="OrderModel.OrderCode" class="form-control" />
+                    <span asp-validation-for="OrderModel.OrderCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Order Date</label>
+                    <input type="date" asp-for="OrderModel.OrderDate" class="form-control" />
+                    <span asp-validation-for="OrderModel.OrderDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Customer</label>
+                    <select asp-for="OrderModel.CustomerName" class="form-control">
+                        @foreach (var customer in Model.CustomerList!)
+                        {
+                            <option>@customer</option>
+                        }
+                    </select>
+                    <span asp-validation-for="OrderModel.CustomerName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="div-right">
+                <h4 class="text-center">Products Ordered</h4>
+                <hr />
+                <div class="div-scroll">
+                    <div id="orderDetails">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label class="form-control text-center">Product and Quantity</label>
+                    </div>
+
+                    <select id="lstProducts" class="form-control-sm">
+                        @foreach (var product in Model.ProductList!)
+                        {
+                            <option>@product.Name</option>
+                        }
+                    </select>
+
+                    <input id="inputQuantity" class="form-control-sm mt-3 m-lg-3" />
+
+                    <input type="button" id="btnAdd" value="Add" onclick="addOrderRow()" class="btn btn-primary m-lg-3" />
+                </div>
+
+                <select id="lstPrice" hidden>
+                    @foreach (var product in Model.ProductList)
+                    {
+                        <option>@product.Price</option>
+                    }
+                </select>
+
+                <span asp-validation-for="OrderModel.OrderDetailDtos" class="text-danger"></span>
+
+                <div class="form-group">
+                    <input id="inputTotal" readonly value="0" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-primary" asp-page-handler="Edit">Save Changes</button>
+            <button type="submit" class="btn btn-danger" asp-page-handler="Delete" onclick="return confirm('Are you sure you want to delete this Order?')">Delete</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="~/js/Order.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+    window.onload = (function () {
+    @if (Model.OrderModel.OrderDetailDtos != null)
+    {
+        @foreach (var item in Model.OrderModel.OrderDetailDtos)
+        {
+            ProductDto productDto = Model.ProductList.FirstOrDefault(e => e.Name == item.ProductName)!;
+            orderTotal += productDto.Price * item.Qty;
+
+            <text>
+                populateOrderRows("@item.ProductName", @item.Qty);
+                populateOrderTotal(@orderTotal);
+            </text>
+        }
+    }
+            })
+</script>

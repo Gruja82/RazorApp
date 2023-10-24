@@ -1,0 +1,100 @@
+﻿@page
+@model RazorApp.Web.Pages.Purchases.IndexModel
+
+<h3 class="text-center">Orders</h3>
+
+<a asp-page="/Purchases/Create" asp-page-handler="OnGet" class="btn btn-primary">Create New</a>
+
+<nav class="navbar navbar-light bg-light">
+    <form method="get" class="form-inline">
+        <input name="searchText" type="text" placeholder="Search" />
+        <select name="supplier">
+            <option>Select Supplier</option>
+            @foreach (var supplier in Model.SupplierList!)
+            {
+                <option>@supplier</option>
+            }
+        </select>
+        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search" />
+    </form>
+</nav>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Supplier</th>
+            <th scope="col">Date</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.PurchaseModel.DataSet != null)
+        {
+            @foreach (var purchase in Model.PurchaseModel.DataSet)
+            {
+                <tr>
+                    <td>@purchase.PurchaseCode</td>
+                    <td>@purchase.SupplierName</td>
+                    <td>@purchase.PurchaseDate.ToShortDateString()</td>
+                    <td>
+                        <a asp-page="/Purchases/Edit" asp-page-handler="OnGet" asp-route-Id="@purchase.Id" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<form asp-page-handler="OnGet" method="get">
+    <nav>
+        <ul class="pagination">
+            @*Previous button*@
+            @if (Model.PurchaseModel.PageIndex > 1)
+            {
+                <li class="page-item">
+                    <button class="page-link" type="submit" name="pageIndex" value="@(Model.PurchaseModel.PageIndex - 1)">
+                        <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+            }
+
+            @*Numbers*@
+            @for (int i = 1; i <= Model.PurchaseModel.TotalPages; i++)
+            {
+                @if (i == Model.PurchaseModel.PageIndex)
+                {
+                    <li class="page-item">
+                        <span class="btn btn-info">@i</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <input class="btn btn-outline-info" type="submit" value="@i" name="pageIndex" />
+                    </li>
+                }
+            }
+
+            @*Next button*@
+            @if (Model.PurchaseModel.PageIndex < Model.PurchaseModel.TotalPages)
+            {
+                <li class="page-item">
+                    <button class="page-link" type="submit" name="pageIndex" value="@(Model.PurchaseModel.PageIndex + 1)">
+                        <span aria-hidden="true">&raquo;</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </nav>
+
+    <div>
+        Page size: <select asp-for="PurchaseModel.PageSize" name="pageSize">
+            @for (int i = 1; i <= 10; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </div>
+</form>

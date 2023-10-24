@@ -1,0 +1,65 @@
+﻿@page
+@model RazorApp.Web.Pages.Suppliers.CreateModel
+
+<h3 class="text-center">New Supplier</h3>
+
+<hr />
+
+<form method="post" asp-page-handler="OnPost" enctype="multipart/form-data">
+    <div class="form-group">
+        <div class="form-group">
+            <img width="200" height="200" id="imgElement" asp-append-version="true" />
+        </div>
+        <div class="form-group">
+            <input type="file" asp-for="SupplierModel.Image" class="form-control" id="inputElement" onchange="setSrc()" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Code</label>
+        <input asp-for="SupplierModel.Code" class="form-control" />
+        <span asp-validation-for="SupplierModel.Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Name</label>
+        <input asp-for="SupplierModel.Name" class="form-control" />
+        <span asp-validation-for="SupplierModel.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Contact</label>
+        <input asp-for="SupplierModel.Contact" class="form-control" />
+        <span asp-validation-for="SupplierModel.Contact" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Address</label>
+        <textarea asp-for="SupplierModel.Address" class="form-control"></textarea>
+        <span asp-validation-for="SupplierModel.Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>City</label>
+        <input asp-for="SupplierModel.City" class="form-control" />
+        <span asp-validation-for="SupplierModel.City" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Postal</label>
+        <input asp-for="SupplierModel.Postal" class="form-control" />
+        <span asp-validation-for="SupplierModel.Postal" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Phone</label>
+        <input asp-for="SupplierModel.Phone" class="form-control" />
+        <span asp-validation-for="SupplierModel.Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>E-Mail</label>
+        <input asp-for="SupplierModel.Email" class="form-control" />
+        <span asp-validation-for="SupplierModel.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Web Address</label>
+        <input asp-for="SupplierModel.Web" class="form-control" />
+    </div>
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>

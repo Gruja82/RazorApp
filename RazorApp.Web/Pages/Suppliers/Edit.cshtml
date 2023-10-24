@@ -1,0 +1,67 @@
+﻿@page "{id}"
+@model RazorApp.Web.Pages.Suppliers.EditModel
+
+<h3 class="text-center">Supplier "@Model.SupplierModel.Name"</h3>
+
+<hr />
+
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="SupplierModel.Id" hidden />
+    <div class="form-group">
+        <div class="form-group">
+            <img src="~/Images/Suppliers/@Model.SupplierModel.ImageUrl" width="200" height="200" id="imgElement" asp-append-version="true" />
+        </div>
+        <div class="form-group">
+            <input type="file" asp-for="SupplierModel.Image" class="form-control" id="inputElement" onchange="setSrc()" />
+        </div>
+        <input asp-for="SupplierModel.ImageUrl" hidden />
+    </div>
+    <div class="form-group">
+        <label>Code</label>
+        <input asp-for="SupplierModel.Code" class="form-control" />
+        <span asp-validation-for="SupplierModel.Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Name</label>
+        <input asp-for="SupplierModel.Name" class="form-control" />
+        <span asp-validation-for="SupplierModel.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Contact</label>
+        <input asp-for="SupplierModel.Contact" class="form-control" />
+        <span asp-validation-for="SupplierModel.Contact" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Address</label>
+        <textarea asp-for="SupplierModel.Address" class="form-control"></textarea>
+        <span asp-validation-for="SupplierModel.Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>City</label>
+        <input asp-for="SupplierModel.City" class="form-control" />
+        <span asp-validation-for="SupplierModel.City" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Postal Code</label>
+        <input asp-for="SupplierModel.Postal" class="form-control" />
+        <span asp-validation-for="SupplierModel.Postal" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Phone</label>
+        <input asp-for="SupplierModel.Phone" class="form-control" />
+        <span asp-validation-for="SupplierModel.Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="SupplierModel.Email" class="form-control" />
+        <span asp-validation-for="SupplierModel.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Web Address</label>
+        <input asp-for="SupplierModel.Web" class="form-control" />
+    </div>
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary" asp-page-handler="Edit">Save Changes</button>
+        <button type="submit" class="btn btn-danger" asp-page-handler="Delete" onclick="return confirm('Are you sure you want to delete this Supplier?')">Delete</button>
+    </div>
+</form>

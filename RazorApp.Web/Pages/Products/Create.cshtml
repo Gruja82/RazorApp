@@ -1,0 +1,87 @@
+﻿@page
+@model RazorApp.Web.Pages.Products.CreateModel
+
+<h3 class="text-center">New Product</h3>
+
+<hr />
+
+<form method="post" enctype="multipart/form-data" asp-page-handler="OnPost">
+    <div style="width:100%">
+        <div class="div-left">
+            <h4 class="text-center">General Details</h4>
+            <hr />
+            <div class="form-group">
+                <img width="200" height="200" id="imgElement" asp-append-version="true" />
+            </div>
+            <div class="form-group">
+                <input type="file" asp-for="ProductModel.Image" class="form-control" id="inputElement" onchange="setSrc()" />
+            </div>
+            <div class="form-group">
+                <label>Code</label>
+                <input asp-for="ProductModel.Code" class="form-control" />
+                <span asp-validation-for="ProductModel.Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Name</label>
+                <input id="productName" asp-for="ProductModel.Name" class="form-control" />
+                <span asp-validation-for="ProductModel.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select asp-for="ProductModel.CategoryName" class="form-control">
+                    @foreach (var category in Model.CategoryList!)
+                    {
+                        <option>@category</option>
+                    }
+                </select>
+                <span asp-validation-for="ProductModel.CategoryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Price</label>
+                <input asp-for="ProductModel.Price" class="form-control" />
+                <span asp-validation-for="ProductModel.Price" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="div-right">
+            <h4 class="text-center">Production Specification</h4>
+            <hr />
+            <div class="div-scroll">
+                <div id="productDetails">
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label class="form-control text-center">Material and Quantity</label>
+                </div>
+
+                <select id="lstMaterials" class="form-control-sm">
+                    @foreach (var material in Model.MaterialList!)
+                    {
+                        <option>@material.Name</option>
+                    }
+                </select>
+
+                <input id="inputQuantity" class="form-control-sm mt-3 m-lg-3" />
+
+                <input type="button" id="btnAdd" value="Add" onclick="addProductRow()" class="btn btn-primary m-lg-3" />
+            </div>
+
+            <select id="lstPrice" hidden>
+                @foreach (var material in Model.MaterialList)
+                {
+                    <option>@material.Price</option>
+                }
+            </select>
+
+            <span asp-validation-for="ProductModel.ProductDetailDtos" class="text-danger"></span>
+
+            <div class="form-group">
+                <input id="inputTotal" readonly value="0" class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <input type="submit" value="Create" class="btn btn-primary text-center" />
+</form>
+
+<script type="text/javascript" src="~/js/Product.js" asp-append-version="true"></script>

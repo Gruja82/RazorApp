@@ -1,0 +1,76 @@
+﻿@page
+@model RazorApp.Web.Pages.Purchases.CreateModel
+
+<h3 class="text-center">New Purchase</h3>
+
+<hr />
+
+<form method="post" asp-page-handler="OnPost">
+    <div style="width:100%">
+        <div class="div-left">
+            <h4 class="text-center">General Details</h4>
+            <hr />
+            <div class="form-group">
+                <label>Code</label>
+                <input id="purchaseCode" asp-for="PurchaseModel.PurchaseCode" class="form-control" />
+                <span asp-validation-for="PurchaseModel.PurchaseCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Purchase Date</label>
+                <input type="date" asp-for="PurchaseModel.PurchaseDate" class="form-control" value="@DateTime.Now" />
+                <span asp-validation-for="PurchaseModel.PurchaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Supplier</label>
+                <select asp-for="PurchaseModel.SupplierName" class="form-control">
+                    @foreach (var supplier in Model.SupplierList!)
+                    {
+                        <option>@supplier</option>
+                    }
+                </select>
+                <span asp-validation-for="PurchaseModel.SupplierName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="div-right">
+            <h4 class="text-center">Materials Purchased</h4>
+            <hr />
+            <div class="div-scroll">
+                <div id="purchaseDetails">
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label class="form-control text-center">Material and Quantity</label>
+                </div>
+
+                <select id="lstMaterials" class="form-control-sm">
+                    @foreach (var material in Model.MaterialList!)
+                    {
+                        <option>@material.Name</option>
+                    }
+                </select>
+
+                <input id="inputQuantity" class="form-control-sm mt-3 m-lg-3" />
+
+                <input type="button" id="btnAdd" value="Add" onclick="addPurchaseRow()" class="btn btn-primary m-lg-3" />
+            </div>
+
+            <select id="lstPrice" hidden>
+                @foreach (var material in Model.MaterialList)
+                {
+                    <option>@material.Price</option>
+                }
+            </select>
+
+            <span asp-validation-for="PurchaseModel.PurchaseDetailDtos" class="text-danger"></span>
+
+            <div class="form-group">
+                <input id="inputTotal" readonly value="0" class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <input type="submit" value="Create" class="btn btn-primary text-center" />
+</form>
+
+<script type="text/javascript" src="~/js/Purchase.js" asp-append-version="true"></script>

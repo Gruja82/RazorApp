@@ -1,0 +1,29 @@
+﻿@page "{id}"
+@model RazorApp.Web.Pages.Categories.EditModel
+
+<h3 class="text-center">Category "@Model.CategoryModel.Name"</h3>
+
+<hr />
+
+<form method="post">
+    <input asp-for="CategoryModel.Id" hidden />
+    <div class="form-group">
+        <label>Code</label>
+        <input asp-for="CategoryModel.Code" class="form-control" />
+        <span asp-validation-for="CategoryModel.Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Name</label>
+        <input asp-for="CategoryModel.Name" class="form-control" />
+        <span asp-validation-for="CategoryModel.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Description</label>
+        <textarea asp-for="CategoryModel.Description" class="form-control"></textarea>
+    </div>
+    <div class="form-group mt-4">
+
+        <button type="submit" class="btn btn-primary" asp-page-handler="Edit">Save Changes</button>
+        <button type="submit" class="btn btn-danger" asp-page-handler="Delete" onclick="return confirm('Are you sure you want to delete this Category?')">Delete</button>
+    </div>
+</form>

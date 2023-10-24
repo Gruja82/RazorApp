@@ -1,0 +1,38 @@
+﻿@page
+@model RazorApp.Web.Pages.Productions.CreateModel
+
+<h3 class="text-center">New Production</h3>
+
+<hr />
+
+<form method="post" asp-page-handler="OnPost">
+    <div class="form-group">
+        <label>Code</label>
+        <input asp-for="ProductionModel.Code" class="form-control" />
+        <span asp-validation-for="ProductionModel.Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Production Date</label>
+        <input type="date" asp-for="ProductionModel.ProductionDate" class="form-control" value="@DateTime.Now" />
+        <span asp-validation-for="ProductionModel.ProductionDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Product</label>
+        <select asp-for="ProductionModel.ProductName" class="form-control">
+            @foreach (var product in Model.ProductList)
+            {
+                <option>@product</option>
+            }
+        </select>
+        <span asp-validation-for="ProductionModel.ProductName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <input asp-for="ProductionModel.Qty" class="form-control" />
+        <span asp-validation-for="ProductionModel.Qty" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>

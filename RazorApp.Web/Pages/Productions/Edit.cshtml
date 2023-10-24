@@ -1,0 +1,39 @@
+﻿@page "{id}"
+@model RazorApp.Web.Pages.Productions.EditModel
+
+<h3 class="text-center">Production "@Model.ProductionModel.Code"</h3>
+
+<hr />
+
+<form method="post">
+    <div class="form-group">
+        <label>Code</label>
+        <input asp-for="ProductionModel.Code" class="form-control" />
+        <span asp-validation-for="ProductionModel.Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Production Date</label>
+        <input type="date" asp-for="ProductionModel.ProductionDate" class="form-control" />
+        <span asp-validation-for="ProductionModel.ProductionDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Product</label>
+        <select asp-for="ProductionModel.ProductName" class="form-control">
+            @foreach (var product in Model.ProductList)
+            {
+                <option>@product</option>
+            }
+        </select>
+        <span asp-validation-for="ProductionModel.ProductName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <input asp-for="ProductionModel.Qty" class="form-control" />
+        <span asp-validation-for="ProductionModel.Qty" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary" asp-page-handler="Edit">Save Changes</button>
+        <button type="submit" class="btn btn-danger" asp-page-handler="Delete" onclick="return confirm('Are you sure you want to delete this Production?')">Delete</button>
+    </div>
+</form>

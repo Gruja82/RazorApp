@@ -1,0 +1,91 @@
+﻿@page
+@model RazorApp.Web.Pages.Categories.IndexModel
+
+<h3 class="text-center">Categories</h3>
+
+<a asp-page="/Categories/Create" asp-page-handler="OnGet" class="btn btn-primary">Create New</a>
+
+<nav class="navbar navbar-light bg-light">
+    <form method="get" class="form-inline">
+        <input name="searchText" type="text" placeholder="Code--Name" />
+        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search" />
+    </form>
+</nav>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Name</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.CategoryModel.DataSet != null)
+        {
+            @foreach (var category in Model.CategoryModel.DataSet)
+            {
+                <tr>
+                    <td>@category.Code</td>
+                    <td>@category.Name</td>
+                    <td>
+                        <a asp-page="/Categories/Edit" asp-page-handler="OnGet" asp-route-Id="@category.Id" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<form asp-page-handler="OnGet" method="get">
+    <nav>
+        <ul class="pagination">
+            @*Previous button*@
+            @if (Model.CategoryModel.PageIndex > 1)
+            {
+                <li class="page-item">
+                    <button class="page-link" type="submit" name="pageIndex" value="@(Model.CategoryModel.PageIndex - 1)">
+                        <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+            }
+
+            @*Numbers*@
+            @for (int i = 1; i <= Model.CategoryModel.TotalPages; i++)
+            {
+                @if (i == Model.CategoryModel.PageIndex)
+                {
+                    <li class="page-item">
+                        <span class="btn btn-info">@i</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <input class="btn btn-outline-info" type="submit" value="@i" name="pageIndex" />
+                    </li>
+                }
+            }
+
+            @*Next button*@
+            @if (Model.CategoryModel.PageIndex < Model.CategoryModel.TotalPages)
+            {
+                <li class="page-item">
+                    <button class="page-link" type="submit" name="pageIndex" value="@(Model.CategoryModel.PageIndex + 1)">
+                        <span aria-hidden="true">&raquo;</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </nav>
+
+    <div>
+        Page size: <select asp-for="CategoryModel.PageSize" name="pageSize">
+            @for (int i = 1; i <= 10; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </div>
+</form>
